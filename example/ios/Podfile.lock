@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - soe (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - soe (from `.symlinks/plugins/soe/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  soe:
+    :path: ".symlinks/plugins/soe/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  soe: 71d6f0c71c8f6a1004c96c29dc0013adec96ae5e
+
+PODFILE CHECKSUM: 686af2209b2e886f30c5cfd5a6db043e2fb358c7
+
+COCOAPODS: 1.6.0
