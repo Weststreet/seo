@@ -87,11 +87,11 @@
     if(result!=nil){
   
         NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                    [NSString stringWithFormat:@"%f",result.pronAccuracy], @"pronAccuracy",
-                                    [NSString stringWithFormat:@"%f",result.pronFluency], @"pronFluency",
-                                    [NSString stringWithFormat:@"%f",result.pronCompletion], @"pronCompletion",
+                                    @(result.pronAccuracy), @"pronAccuracy",
+                                    @(result.pronFluency), @"pronFluency",
+                                    @(result.pronCompletion), @"pronCompletion",
                                     [NSString stringWithFormat:@"%@",result.audioUrl], @"audioUrl",nil];
-   
+
         NSMutableArray *array = [NSMutableArray arrayWithCapacity:result.words.count];
         for (TAIOralEvaluationWord *word  in result.words){
             NSMutableDictionary *words = [NSMutableDictionary dictionary];
