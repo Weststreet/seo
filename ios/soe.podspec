@@ -16,13 +16,11 @@ A new flutter plugin project.
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
 
-  s.preserve_paths = 'TAISDK.framework'
-  s.xcconfig = { 'OTHER_LDFLAGS' => '-framework TAISDK' }
-  s.vendored_frameworks = 'TAISDK.framework'
 
-  s.preserve_paths = 'lame.framework'
-  s.xcconfig = { 'OTHER_LDFLAGS' => '-framework lame' }
-  s.vendored_frameworks = 'lame.framework'
+
+
+  s.vendored_frameworks = 'lame.framework', 'TAISDK.framework'
+
 
   s.ios.deployment_target = '8.0'
 
