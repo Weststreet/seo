@@ -43,7 +43,7 @@
     param.evalMode = TAIOralEvaluationEvalMode_Sentence;
     param.storageMode = TAIOralEvaluationStorageMode_Enable;
     param.serverType = TAIOralEvaluationServerType_English;
-    param.scoreCoeff = 4.0;
+    param.scoreCoeff = 3.0;
     param.fileType = TAIOralEvaluationFileType_Mp3;//
     param.refText = text;
     
