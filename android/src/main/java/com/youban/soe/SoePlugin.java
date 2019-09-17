@@ -2,6 +2,7 @@ package com.youban.soe;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.tencent.taisdk.TAIError;
 import com.tencent.taisdk.TAIOralEvaluation;
 import com.tencent.taisdk.TAIOralEvaluationCallback;
@@ -81,7 +82,15 @@ public class SoePlugin implements MethodCallHandler {
                         }
                     }
                     soeResult.setWords(wordsList);
-                    eventSink.success(soeResult);
+                    Gson gson = new Gson();
+                    final String resultString =gson.toJson(soeResult);
+                    registrar.activity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            eventSink.success(resultString);
+                        }
+                    });
+
                 }
             }
         });
@@ -92,7 +101,6 @@ public class SoePlugin implements MethodCallHandler {
         if (call.method.equals("getPlatformVersion")) {
             result.success("Android " + android.os.Build.VERSION.RELEASE);
         } else if (call.method.equals("startRecord")) {
-            Log.d("TAG", "startRecordddd");
             onRecord((String) call.argument("sentence"), (String) call.argument("appId"), (String) call.argument("secretId"), (String) call.argument("secretKey"));
         } else if (call.method.equals("stopRecord")) {
             onStopRecord();
@@ -108,12 +116,12 @@ public class SoePlugin implements MethodCallHandler {
         param.context = registrar.context();
         param.appId = appid;
         param.sessionId = UUID.randomUUID().toString();
-        param.workMode = TAIOralEvaluationWorkMode.ONCE;
+        param.workMode = TAIOralEvaluationWorkMode.STREAM;
         param.evalMode = TAIOralEvaluationEvalMode.SENTENCE;
-        param.storageMode = TAIOralEvaluationStorageMode.DISABLE;
+        param.storageMode = TAIOralEvaluationStorageMode.ENABLE;
         param.serverType = TAIOralEvaluationServerType.ENGLISH;
         param.fileType = TAIOralEvaluationFileType.MP3;//只支持mp3
-        param.scoreCoeff = 1.0;
+        param.scoreCoeff = 3.0;
         param.refText = text;
         param.secretId = secretId;
         param.secretKey = secretKey;
@@ -122,6 +130,7 @@ public class SoePlugin implements MethodCallHandler {
             @Override
             public void onResult(final TAIError error) {
                 //结果返回
+                Log.d("TAg", "onRecord"+error.code);
             }
         });
 
@@ -132,7 +141,7 @@ public class SoePlugin implements MethodCallHandler {
         oral.stopRecordAndEvaluation(new TAIOralEvaluationCallback() {
             @Override
             public void onResult(final TAIError error) {
-                Log.d("TAg", "onStopRecord");
+                Log.d("TAg", "onStopRecord"+error.code);
                 //结果返回
             }
         });

@@ -36,4 +36,5 @@ android {
 dependencies{
 
     implementation 'com.tencent.taisdk:taisdk:1.2.0.61'
+    implementation 'com.google.code.gson:gson:2.8.2'
 }
