@@ -61,39 +61,7 @@ public class SoePlugin implements MethodCallHandler {
 
     private SoePlugin(final Registrar registrar) {
         this.registrar = registrar;
-        oral = new TAIOralEvaluation();
-        oral.setListener(new TAIOralEvaluationListener() {
-            @Override
-            public void onEvaluationData(final TAIOralEvaluationData data, final TAIOralEvaluationRet result, final TAIError error) {
-                //数据和结果回调（只有data.bEnd为true，result有效）
-                if (data.bEnd && result != null) {
-                    SoeResult soeResult = new SoeResult();
-                    soeResult.setAudioUrl(result.audioUrl);
-                    soeResult.setPronAccuracy(result.pronAccuracy);
-                    soeResult.setPronCompletion(result.pronCompletion);
-                    soeResult.setPronFluency(result.pronFluency);
-                    ArrayList<Words> wordsList = new ArrayList<>();
-                    for (TAIOralEvaluationWord taiOralEvaluationWord : result.words) {
-                        if (taiOralEvaluationWord != null) {
-                            Words words = new Words();
-                            words.setMatchTag(taiOralEvaluationWord.matchTag);
-                            words.setWord(taiOralEvaluationWord.word);
-                            wordsList.add(words);
-                        }
-                    }
-                    soeResult.setWords(wordsList);
-                    Gson gson = new Gson();
-                    final String resultString =gson.toJson(soeResult);
-                    registrar.activity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            eventSink.success(resultString);
-                        }
-                    });
 
-                }
-            }
-        });
     }
 
     @Override
@@ -111,6 +79,42 @@ public class SoePlugin implements MethodCallHandler {
 
 
     private void onRecord(String text, String appid, String secretId, String secretKey) {
+        if(oral==null) {
+            oral = new TAIOralEvaluation();
+            oral.setListener(new TAIOralEvaluationListener() {
+                @Override
+                public void onEvaluationData(final TAIOralEvaluationData data, final TAIOralEvaluationRet result, final TAIError error) {
+                    //数据和结果回调（只有data.bEnd为true，result有效）
+                    if (data.bEnd && result != null) {
+                        SoeResult soeResult = new SoeResult();
+                        soeResult.setAudioUrl(result.audioUrl);
+                        soeResult.setPronAccuracy(result.pronAccuracy);
+                        soeResult.setPronCompletion(result.pronCompletion);
+                        soeResult.setPronFluency(result.pronFluency);
+                        ArrayList<Words> wordsList = new ArrayList<>();
+                        for (TAIOralEvaluationWord taiOralEvaluationWord : result.words) {
+                            if (taiOralEvaluationWord != null) {
+                                Words words = new Words();
+                                words.setMatchTag(taiOralEvaluationWord.matchTag);
+                                words.setWord(taiOralEvaluationWord.word);
+                                wordsList.add(words);
+                            }
+                        }
+                        soeResult.setWords(wordsList);
+                        Gson gson = new Gson();
+                        final String resultString = gson.toJson(soeResult);
+                        registrar.activity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                eventSink.success(resultString);
+                            }
+                        });
+
+                    }
+                }
+            });
+        }
+
         //1.初始化参数
         TAIOralEvaluationParam param = new TAIOralEvaluationParam();
         param.context = registrar.activity();
