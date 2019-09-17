@@ -113,7 +113,7 @@ public class SoePlugin implements MethodCallHandler {
     private void onRecord(String text, String appid, String secretId, String secretKey) {
         //1.初始化参数
         TAIOralEvaluationParam param = new TAIOralEvaluationParam();
-        param.context = registrar.context();
+        param.context = registrar.activity();
         param.appId = appid;
         param.sessionId = UUID.randomUUID().toString();
         param.workMode = TAIOralEvaluationWorkMode.STREAM;
