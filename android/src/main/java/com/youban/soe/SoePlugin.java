@@ -1,9 +1,5 @@
 package com.youban.soe;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.tencent.taisdk.TAIError;
@@ -21,7 +17,6 @@ import com.tencent.taisdk.TAIOralEvaluationWord;
 import com.tencent.taisdk.TAIOralEvaluationWorkMode;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import io.flutter.plugin.common.EventChannel;
@@ -38,7 +33,6 @@ public class SoePlugin implements MethodCallHandler {
     private TAIOralEvaluation oral;
     private static EventChannel.EventSink eventSink;
     private Registrar registrar;
-    final int REQUEST_RECORD_AUDIO_CODE=1;
 
     /**
      * Plugin registration.
@@ -71,7 +65,7 @@ public class SoePlugin implements MethodCallHandler {
             @Override
             public void onEvaluationData(final TAIOralEvaluationData data, final TAIOralEvaluationRet result, final TAIError error) {
                 //数据和结果回调（只有data.bEnd为true，result有效）
-                if (data.bEnd&&result!=null) {
+                if (data.bEnd && result != null) {
                     SoeResult soeResult = new SoeResult();
                     soeResult.setAudioUrl(result.audioUrl);
                     soeResult.setPronAccuracy(result.pronAccuracy);
@@ -98,16 +92,8 @@ public class SoePlugin implements MethodCallHandler {
         if (call.method.equals("getPlatformVersion")) {
             result.success("Android " + android.os.Build.VERSION.RELEASE);
         } else if (call.method.equals("startRecord")) {
-            int permissionCheck = ContextCompat.checkSelfPermission(registrar.activity(),
-                    Manifest.permission.RECORD_AUDIO);
-            if(permissionCheck== PackageManager.PERMISSION_GRANTED){
-                Log.d("TAG", "startRecordddd");
-                onRecord((String) call.argument("sentence"), (String) call.argument("appId"), (String) call.argument("secretId"), (String) call.argument("secretKey"));
-            }else{
-                ActivityCompat.requestPermissions(registrar.activity(),
-                        new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO_CODE);
-            }
-
+            Log.d("TAG", "startRecordddd");
+            onRecord((String) call.argument("sentence"), (String) call.argument("appId"), (String) call.argument("secretId"), (String) call.argument("secretKey"));
         } else if (call.method.equals("stopRecord")) {
             onStopRecord();
         } else {
@@ -115,9 +101,6 @@ public class SoePlugin implements MethodCallHandler {
         }
     }
 
-    private void checkPermission() {
-
-    }
 
     private void onRecord(String text, String appid, String secretId, String secretKey) {
         //1.初始化参数
@@ -149,7 +132,7 @@ public class SoePlugin implements MethodCallHandler {
         oral.stopRecordAndEvaluation(new TAIOralEvaluationCallback() {
             @Override
             public void onResult(final TAIError error) {
-                Log.d("TAg","onStopRecord");
+                Log.d("TAg", "onStopRecord");
                 //结果返回
             }
         });
