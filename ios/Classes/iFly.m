@@ -21,7 +21,6 @@
 
 @implementation iFly
 
-
 - (void)onRecord:(NSString*)text :(NSString*)appId :(NSString*)secretId :(NSString*)secretKey {
     if([self.oralEvaluation isRecording]){
         
@@ -106,6 +105,7 @@
         if(self.completionHandlers!=nil){
             self.completionHandlers(jsonString);
         }
+    
     }
 }
 

@@ -55,6 +55,7 @@ FlutterMethodChannel* channel;
 @implementation FLTSentenceRecognizeStreamHandler
 
 - (FlutterError*)onListenWithArguments:(id)arguments eventSink:(FlutterEventSink)eventSink {
+NSLog(@"结果？%@",@"dddddd");
     [fly addRecognizeResultHandler:^(NSString * _Nonnull result) {
     NSLog(@"结果？%@",result);
     NSLog(@"！！！！");
